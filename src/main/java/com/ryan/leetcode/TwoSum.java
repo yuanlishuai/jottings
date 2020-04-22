@@ -37,7 +37,7 @@ public class TwoSum {
     // 利用Hash表
     //时间复杂度为O(n)
     public static int[] twoSum(int[] sums, int target) {
-        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < sums.length; i++) {
             int camp = target - sums[i];
             if (map.containsKey(camp)) {
