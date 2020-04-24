@@ -9,6 +9,7 @@ package com.ryan.utils;
  */
 
 public class ShortUrl {
+
     private static final String BASE = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 
