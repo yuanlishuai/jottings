@@ -24,7 +24,7 @@ public class DequeTest {
         System.out.println(s);
         System.out.println(deque);
 
-        while (deque.size() >0){
+        while (deque.size() > 0) {
             System.out.print(deque.pop());
         }
         System.out.println();

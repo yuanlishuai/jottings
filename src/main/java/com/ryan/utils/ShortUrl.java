@@ -12,10 +12,9 @@ public class ShortUrl {
     private static final String BASE = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 
-
-
     /**
      * 将62进制转换为十进制
+     *
      * @param input 62进制字符串
      * @return
      */
@@ -31,8 +30,6 @@ public class ShortUrl {
 
         return id;
     }
-
-
 
 
 }
