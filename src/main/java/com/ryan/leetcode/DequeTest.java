@@ -4,10 +4,9 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 /**
+ *
  * @author yuanls
  * @createdate 2020/4/21 21:13
- * @modifier yuanls
- * @updatedate 2020/4/21 21:13
  * @vesion 1.0
  */
 
