@@ -17,4 +17,10 @@ public class ContainsDuplicateTest {
         boolean b = ContainsDuplicate.containsDuplicate(new int[]{1, 2, 2});
         assertTrue(b);
     }
+
+    @Test
+    public void containsDuplicateHasHTest() {
+        boolean b = ContainsDuplicate.containsDuplicateHash(new int[]{1, 2, 2});
+        assertTrue(b);
+    }
 }
