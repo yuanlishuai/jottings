@@ -1,0 +1,22 @@
+## MAVEN 传递性依赖和依赖范围  
+#### 依赖范围 
+   * compile ：编译依赖范围，如果没有指定则默认此范围-对编译、测试、运行都有效
+   * test ：测试依赖范围，此依赖范围只对此时classPath 有效，在编译和运行时无法使用
+   * provided ： 已提供依赖范围，此依赖范围对于编译和测试有效，但是对于运行无效
+   * runtime ：运行时依赖范围， 对于测试和运行时有效，但是对于编译主代码时无效
+   * system ： 系统依赖范围，该依赖范围和 `provided`  完全一样。
+      但是使用的时候必须通过systemPath元素显示的指定依赖文件路径，
+      该依赖不通过maven仓库解析，而且往往与本机系统绑定，可能造成不可移植，谨慎使用
+
+------------------
+- 最左边一列表示第一直接依赖范围  
+- 最上边一行表示第二直接依赖范围   
+
+|          | compile | test   | provided| runtime |  
+|  :---    | :---:   | :---:  |  :---:  |   :---: | 
+| compile  | compile | ---    |  ---    |  runtime|  
+| test     | test    | ---    |  ---    |  test   |   
+| provided | provided| ---    |provided | provided|
+| runtime  | runtime | ---    |  ---    | runtime |  
+
+-------------------
