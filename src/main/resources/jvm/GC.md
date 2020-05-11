@@ -30,6 +30,17 @@
 ###### HotSpot参数部分  
 > 标准 ：  `-` 开头 所有 HotSpot都支持  
 > 非标准： `-X` 开头 特定HotSpot支持特定命令  
-> 不稳定： `-XX` 开头 下个版本可能取消  
+> 不稳定： `-XX` 开头 下个版本可能取消    
+
+##### GC日志设置 
+ 
+    -Xloggc:/Users/yuanls/Downloads/logs/gc-%t.log   //指定GC日志文件输出位置
+    -XX:+UseGCLogFileRotation    //开启滚动日志
+    -XX:NumberOfGCLogFiles=5     //设置GC日志的个数
+    -XX:GCLogFileSize=10k        //设置日志多大时写入下一个GC日志文件
+    -XX:+PrintGCDetails          //输出GC详情
+    -XX:+PrintGCDateStamps  
+    -XX:+PrintGCCause 
+ 
 
 
