@@ -1,6 +1,6 @@
 # JVN   
 
-![Garbage Collectors](/src/main/java/com/ryan/jvm/image/garbage.png)
+![Garbage Collectors](src/main/resources/jvm/image/garbage.png)
 
 > 打印java 运行时的参数 `java -XX:+PrintCommandLineFlags -version` 
 > 
