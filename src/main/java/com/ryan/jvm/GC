@@ -1,0 +1,22 @@
+# JVN   
+
+![Garbage Collectors](/src/main/java/com/ryan/jvm/image/garbage.png)
+
+> 打印java 运行时的参数 `java -XX:+PrintCommandLineFlags -version` 
+> 
+> -XX:InitialHeapSize=268435456   
+> -XX:MaxHeapSize=4294967296   
+> -XX:+PrintCommandLineFlags   
+> -XX:+UseCompressedClassPointers  
+> -XX:+UseCompressedOops   
+> -XX:+UseParallelGC  
+
+ java1.8 默认 使用的GC收集器为 `ParallelGC `
+ 
+垃圾回收器的发展路线是，是随着内存越来越大的过程而演进，从分代算法到不分代算法  
+serial ：几十兆  
+Parallel ：几个G  
+CMS ：几十个G  
+G1 (Garbage First)：上百G  
+ZGC : 4T  
+Shenandoah : 4T  
