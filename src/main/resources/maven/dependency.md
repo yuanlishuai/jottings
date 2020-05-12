@@ -139,7 +139,54 @@ Maven拥有三套相互独立的生命周期分别为 :
     * post-site ：执行以下在生成项目站点之后需要完成的工作
     * site-deploy ：将生成的项目站点发布到服务器上    
 
+---
 
+## 聚合与继承  
+### 聚合  
+ `<module>` 声明模块 
+ 
+### 继承
+`<parent>` 声明父模块   
+      
+有哪些POM元素是可以被继承的:
+   * groupId :项目id，项目坐标的核心元素  
+   * version :项目版本，项目坐标的核心元素   
+   * description :项目中的描述信息 
+   * organization :项目的组织信息
+   * inception Year :项目的创始年份
+   * url:项目中的url
+   * developer :项目中的开发者信息
+   * contribution :项目中的贡献者信息
+   * distributionManagement ：项目的部署配置
+   * issueManagement ：项目的缺陷跟踪系统信息
+   * ciManagement ：项目的持续集成信息
+   * scm ：项目的版本控制系统信息
+   * mailingLists ：项目的邮件信息
+   * properties ：自定义的Maven属性
+   * dependencyManagement ：项目的依赖配置管理
+   * repositories ：项目的仓库信息
+   * build ： 包括项目的源码目录配置、输出目录配置、插件配置、插件管理配置
+   * reporting ： 包括想的报告输出目录配置、报告插件配置等。  
+ 
+#### 依赖管理
+ `distributionManagement` 该元素既能让子模块集成到父模块的依赖配置，又能保证子模块依赖的灵活使用，在`distributionManagement`元素  
+ 下的依赖声明不会引入实际的依赖，不过它能约束 `dependency`下的依赖使用。  
+ 插件同理 --> `pluginManagement`   
+ 
+
+----
+
+## 使用Nexus创建私服
+![Nexus](../image/Nexus.png)
+ 
+ #### Nexus四种类型
+- group ：仓库组
+- hosted ：宿主
+- proxy ：代理
+- virtual ：虚拟
+ 
+
+ 
   
 
 
