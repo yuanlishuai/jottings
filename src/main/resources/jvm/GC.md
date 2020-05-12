@@ -43,4 +43,11 @@
     -XX:+PrintGCCause 
  
 
+## jmap
+> `jmap -histo pid  | head 20`  查找有多少对象产生  
+> `jmap  -dump:format=b,file=xxx pid` dump heap内存， ！！！ 谨慎操作若堆很大则会卡死，影响服务  
+
+
+
+
 
