@@ -44,59 +44,7 @@
 
 ---
  
-## 私服  
 
-* 私服优点
-  - 节省自己的外网带宽
-  - 加速Maven构件
-  - 部署第三方构件
-  - 提高稳定性，增强控制
-  - 降低中央仓库的负荷  
-
-## 远程仓库  
-#### 配置  
-
-```xml
-<package> 
- ...
-  <!-- repositories 元素下可声明多个元素 -->
-   <repositories>
-    <repository>
-        <id>jboos</id>
-        <name>JBoos Repository</name>
-        <url>http://repository.jboos.com/maven2</url>
-        <releases>
-            <enabled>true</enabled>
-        </releases>
-        <snapshots>
-            <!--  关闭SNAPSHOT 版本的下载      -->
-            <enabled>false</enabled>
-             <!-- updatePolicy 配置maven从远程仓库检查更新的频率 默认为： daily 表示每天检查一次
-              可用值：
-                daily：每天检查一次 （默认）
-                never：从不检查
-                always：每次构建都检查一次
-                interval-X ： 每隔X分钟检查一个更新
-              用户可添加参数  `-U` 来强制更新
-             -->
-            <updatePolicy>daily</updatePolicy>
-            <!-- checksumPolicy 检查校验和文件的策略。 当构件被部署到Maven仓库时会同时不失对应的校验和文件，在下载时Maven会验证校验和文件
-                 可选值：
-                    warn ：执行构建时输出告警信息 （默认）
-                    fail ：Maven遇到校验和错误就使构建失败
-                    ignore：使Maven完全忽略检验和错误
-             -->
-            <checksumPolicy>ignore</checksumPolicy>
-        </snapshots>
-    </repository>
-   </repositories>
-</package>
-```
-#### 认证 
-> 配置认证信息与配置仓库信息不同，仓库信息可直接配置在POM文件中，但认证信息必须在 `setting.xml` 中，
-> 用 `servers`表示。 `server`元素的id必须与POM中序号认证的`repository`的 id 完全一致
-  
-==
 
 ## 生命周期和插件    
 > Maven 的生命周期是抽象的，实际上都是由插件来完成。生命周期和插件两者协同工作，密不可分。
@@ -175,6 +123,59 @@ Maven拥有三套相互独立的生命周期分别为 :
  
 
 ----
+
+## 私服  
+
+* 私服优点
+  - 节省自己的外网带宽
+  - 加速Maven构件
+  - 部署第三方构件
+  - 提高稳定性，增强控制
+  - 降低中央仓库的负荷  
+
+## 远程仓库  
+#### 配置  
+
+```xml
+<package> 
+ ...
+  <!-- repositories 元素下可声明多个元素 -->
+   <repositories>
+    <repository>
+        <id>jboos</id>
+        <name>JBoos Repository</name>
+        <url>http://repository.jboos.com/maven2</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <!--  关闭SNAPSHOT 版本的下载      -->
+            <enabled>false</enabled>
+             <!-- updatePolicy 配置maven从远程仓库检查更新的频率 默认为： daily 表示每天检查一次
+              可用值：
+                daily：每天检查一次 （默认）
+                never：从不检查
+                always：每次构建都检查一次
+                interval-X ： 每隔X分钟检查一个更新
+              用户可添加参数  `-U` 来强制更新
+             -->
+            <updatePolicy>daily</updatePolicy>
+            <!-- checksumPolicy 检查校验和文件的策略。 当构件被部署到Maven仓库时会同时不失对应的校验和文件，在下载时Maven会验证校验和文件
+                 可选值：
+                    warn ：执行构建时输出告警信息 （默认）
+                    fail ：Maven遇到校验和错误就使构建失败
+                    ignore：使Maven完全忽略检验和错误
+             -->
+            <checksumPolicy>ignore</checksumPolicy>
+        </snapshots>
+    </repository>
+   </repositories>
+</package>
+```
+#### 认证 
+> 配置认证信息与配置仓库信息不同，仓库信息可直接配置在POM文件中，但认证信息必须在 `setting.xml` 中，
+> 用 `servers`表示。 `server`元素的id必须与POM中序号认证的`repository`的 id 完全一致
+  
 
 ## 使用Nexus创建私服
 ![Nexus](../image/Nexus.png)
