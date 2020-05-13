@@ -172,12 +172,83 @@ Maven拥有三套相互独立的生命周期分别为 :
    </repositories>
 </package>
 ```
+
+```text
+上述配合远程仓库的方式只能对当前Maven 项目有效。但是我们往往想通过一次配置就让本机所有Maven项目都是用自己的私服，
+但是呢 `setting.xml` 不支持直接配置 `repositories`和 `pluginRepositories`。所幸Maven还提供了`Profile`机制  
+能让用户将仓库配置放到`setting.xml`中
+
+```
+```xml
+<settings>
+     <profiles>
+        <profile>
+          <id>aliyun</id>
+          <repositories>
+            <repository>
+              <id>nexus-aliyun</id>
+              <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+              <releases>
+                <enabled>true</enabled>
+              </releases>
+              <snapshots>
+                <enabled>false</enabled>
+              </snapshots>
+            </repository>
+          </repositories>
+        </profile>
+    </profiles>
+     
+  <!-- activeProfiles | List of profiles that are active for all builds. | -->
+  <!-- 当执行构建的时候，Nexus 会将这个 activeProfiles 激活，激活的 profile 会将仓库信息应用到项目中去-->
+  <activeProfiles>
+     <activeProfile>aliyun</activeProfile>
+  </activeProfiles>
+</settings>
+```
+
+
 #### 认证 
 > 配置认证信息与配置仓库信息不同，仓库信息可直接配置在POM文件中，但认证信息必须在 `setting.xml` 中，
 > 用 `servers`表示。 `server`元素的id必须与POM中序号认证的`repository`的 id 完全一致
-  
+```xml
+  <servers>
+    <!-- server | Specifies the authentication information to use when connecting 
+    to a particular server, identified by | a unique name within the system (referred 
+    to by the 'id' attribute below). | | NOTE: You should either specify username/password 
+    OR privateKey/passphrase, since these pairings are | used together. | <server> 
+      <id>deploymentRepo</id> <username>repouser</username> <password>repopwd</password> 
+    </server> -->
+
+    <!-- Another sample, using keys to authenticate. <server> <id>siteServer</id> 
+      <privateKey>/path/to/private/key</privateKey> <passphrase>optional; leave 
+        empty if not used.</passphrase> </server> -->
+    <server>
+      <id>releases</id>
+      <username>admin</username>
+      <password>admin123</password>
+    </server>
+    <server>
+      <id>snapshots</id>
+      <username>admin</username>
+      <password>admin123</password>
+    </server>
+
+    <!--<server>
+      <id>snapshots</id>
+      <username>deployment</username>
+      <password>I3tdMEzuE00HXbvCcb4FQIF</password>
+    </server>
+    <server>
+      <id>releases</id>
+      <username>deployment</username>
+      <password>I3tdMEzuE00HXbvCcb4FQIF</password>
+    </server>-->
+  </servers>
+```
 
 ## 使用Nexus创建私服
+
 ![Nexus](../image/Nexus.png)
  
  #### Nexus四种类型
@@ -185,6 +256,31 @@ Maven拥有三套相互独立的生命周期分别为 :
 - hosted ：宿主
 - proxy ：代理
 - virtual ：虚拟
+#### Nexus 访问控制模型
+Nexus 是基于权限（Privilege）做访问控制的，服务器的每个资源都有相应的权限来控制。  
+Nexus 预定义了三个用户对应了三个权限级别  
+- admin ：该用户拥有对Nexus服务的完全控制，默认密码是 admin123
+- deployment ： 该用户能够访问Nexus，浏览仓库内容，搜索，并且上传部署构件，但是无法对Nexus进行任何配置，默认密码为`deployment123`
+- anonymous ： 该用户对应了所有未登录的匿名用户，他们可以浏览仓库库并进行搜索  
+Nexus 预定义了一下常用且重要的角色  
+- UI：`Basic UI Privileges` ：包含可访问Nexus界面必须的最基本权限
+- UI：`Repository Browser` ：包含了浏览仓库页面所需要的权限
+- UI：`Search` ： 包含了访问快速搜索栏及搜索页面所需要的权限
+- Repo：`All Repositories （Read）` ：给予用户读取所有仓库内容的权限，没有仓库的读取权限，用户将无法在仓库页面上看到实际的仓库内容，
+  也无法从 `Nexus` 上下载构件
+- Repo：`All Repositories（Full control）`： 给予用户完全控制所有仓库内容的权限。用户不仅可浏览、下载构件，还可以部署构件及删除仓库内容   
+
+---
+## 使用Maven进行测试  
+#### 跳过测试  
+> Maven 跳过测试 `skipTests`(不会跳过测试编译、只跳过运行) OR `maven.test.skip=true`（跳过测试编译、测试运行）  
+
+#### 动态指定要运行的测试用例
+> `mvn test -Dtest = Random*test`  OR  `mvn test -Dtest = Randomtest,HelloTest`  
+
+#### 测试覆盖率报告
+> 测试覆盖率是衡量一个项目的代码质量的一个重要的参考指标。[Cobertura](https://github.com/cobertura/cobertura) 是一个优秀的开源测试覆盖率统计工具
+
  
 
  
