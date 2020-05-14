@@ -281,6 +281,77 @@ Nexus 预定义了一下常用且重要的角色
 #### 测试覆盖率报告
 > 测试覆盖率是衡量一个项目的代码质量的一个重要的参考指标。[Cobertura](https://github.com/cobertura/cobertura) 是一个优秀的开源测试覆盖率统计工具
 
+##### Hudson 是Jenkins的前身 
+> Hudson 是一款持续集成（Continuous Integration）工具   
+  
+===
+
+## Maven 版本管理  
+> 目前没有一个 SNAPSHOT -> RELEASE  自动转换的工具   
+> `maven-release-piugin` 貌似可以，后续研究研究，  
+
+## Maven 灵活的构建  
+### Maven 属性
+- 内置属性 
+  * `${basedir}` 标识项目根目录，即包含pom.xml的文件目录
+  * `${version}` 标识项目版本
+- POM属性 ：用户可以使用该类属性引用POM文件中对应元素的值
+  * `${project.build.sourceDirectory}` ：项目的主源码目录，默认为 `src/main/java`
+  * `${project.build.testSourceDirectory}` ：项目的测试源码目录，默认为 `src/test/java`
+  * `${project.build.directory}` : 项目构建输出目录，默认为 `target/`
+  * `${project.outputDirectory}` : 项目主代码编译输出目录，默认输出为 `target/classes`
+  * `${project.testOutputDirectory}` : 项目测试代码编译输出目录， 默认为`target/test-classes`
+  * `${project.groupId}` : 项目的groupId
+  * `${project.artifactId}` : 项目的 artifactId
+  * `${project.version}` : 项目的 `version` 与 `${version}` 等价
+  * `${prodect.build.finalName}` ： 项目打包输文件的名称，默认为 `${project.artifactId}-${project.version}`  
+- 自定义属性 ： 用户可以POM的`<properties>`元素下自定义Maven元素，然后在其他地方引用
+- Settings 属性 ： 与POM属性同理，用户可以使用`Setting.`开头的属性引用`setting.xml`文件中XML元素的值  
+- java 系统属性 ： 所有java系统属性都可以使用Maven属性引用，例如`${user.home}`指向了用户目录
+- 环境变量属性 ： 所有环境变量都可以使用`env.`开头的Maven属性引用。例如`${env.JAVA_HOME}` 指代了`JAVA_HOME`环境变量的值  
+
+
+### Profile
+> Maven 的`-P`参数表示在命令行激活一个`profile`。   
+> 使用方式 mvn 的命令行参数`-P`加上一个 `profile`的id来激活 `profile`  
+
+#### Profile的种类
+- `pom.xml` ：在`pom.xml`中声明的`profile`只对当前项目有效
+- 用户`setting.xml` : 用户目录下 `.m2/setting.xml`中的profile对本机上的所有maven项目有效
+- 全局`setting.xml` ： Maven安装目录下 `config/setting.xml`中的profile对本机上的所有的Maven都有效
+- `profile.xml(maven2)` : ~~可以根据项目根目录先使用一个额外的 `profile.xml`文件夹声明profile，不过该特性已经在maven3 中已经移除。~~ Maven3可以将这些移动到`setting.xml`中
+
+
+### Maven插件
+- `javaDocs` : `mavne-javadoc-plugin` 生成java doc
+- `Source Sref` : `maven-jxr-plugin`随时随地的打开浏览器访问项目最新代码 
+- `CheckStyle` ： `maven-checkstyle-plugin` 代码规范
+- `PMD` ：`maven-pmd-plugin` 强大的java源码分析工具，能够寻找代码中的问题，包括重复代码、潜在的bug、可优化的代码
+- `ChangeLog` ： `maven-changlog-plugin` 能基于版本控制系统中的就近变更记录生成三分报告
+- `Cobertura` `cobertura-maven-plugin` 生成测试覆盖率报告，
+
+## Archetype （原型）
+
+
+## `<settings>` 元素参考
+- `<settings>` : `setting.xml` 文档根元素
+- `<localRepository>` : 本地仓库
+- `<interactiveMode>` : Maven 是否与用户交互，默认值true
+- `<offline>` : 离线模式 默认为false
+- `<pluginGroups> <pluginGroup>` : 插件组
+- `<servers> <server>` : 下载与部署仓库的认证信息
+- `<mirrors> <mirror>` :  仓库镜像
+- `<proxies> <proxy>`  : 代理
+- `<profiles> <profile>` : settings Profiles
+- `<activeProfiles> <activeProfile>` :激活Profile 
+
+ 
+
+
+
+
+
+
  
 
  
