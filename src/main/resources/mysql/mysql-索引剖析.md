@@ -1,4 +1,4 @@
-## 1. 索引是什么?
+`## 1. 索引是什么?
 
 ###  1.1. 索引是什么 
 
@@ -37,12 +37,14 @@
 全文(Fulltext):针对比较大的数据，比如我们存放的是消息内容，有几 KB 的数 据的这种情况，如果要解决 like 查询效率低的问题，可以创建全文索引。只有文本类型 的字段才可以创建全文索引，比如 char、varchar、text。 
 
 全文索引的使用: 
-
+```sql
 select * from fulltext_test where match(content) against('咕泡学院' IN NATURAL LANGUAGE MODE); MyISAM 和 InnoDB 支持全文索引。 
+```
 
 这个是索引的三种类型:普通、唯一、全文。 
-
+```sql
 create table m3 ( name varchar(50), fulltext index(name) ); 
+```
 
 
 
@@ -86,8 +88,7 @@ https://www.cs.usfca.edu/~galles/visualization/Algorithms.html
 
 还是刚才的这一批数字，如果我们插入的数据刚好是有序的，2、6、11、13、17、 22。 
 
-![page5image51634096.jpg](./typora-user-images/page5image51634096.jpg) ![page5image66118848.png](./typora-user-images/page5image66118848.png)
-
+![page5image51634096.jpg](./typora-user-images/page5image51634096.jpg) 
 
 
   这个时候我们的二叉查找树变成了什么样了呢?
@@ -102,7 +103,7 @@ https://www.cs.usfca.edu/~galles/visualization/Algorithms.html
 
 AVL Trees (Balanced binary search trees) 平衡二叉树的定义:左右子树深度差绝对值不能超过 1。 是什么意思呢?比如左子树的深度是 2，右子树的深度只能是 1 或者 3。 这个时候我们再按顺序插入 1、2、3、4、5、6，一定是这样，不会变成一棵“斜树”。
 
- ![截屏2020-01-0519.06.36](/Users/ryan/Desktop/截屏2020-01-0519.06.36.png)
+ ![截屏2020-01-0519.06.36](./typora-user-images/2020-01-0519.06.36.png)
 
 
 
@@ -219,7 +220,7 @@ DYNAMIC Row Format(5.7 默认) COMPRESSED Row Format
 
  
 
-| 文件格式                  | 行格式                                   | 描述                                                         |
+| 文件格式                   | 行格式                                   | 描述                                                         |
 | ------------------------- | ---------------------------------------- | ------------------------------------------------------------ |
 | Antelope (Innodb-base)    | ROW_FORMAT=COMPACT ROW_FORMAT=REDUNDANT  | Compact 和 redumdant 的区别在就是在于首部的存 存内容区别。compact 的存储格式为首部为一个非 NULL 的变长字 段长度列表  redundant 的存储格式为首部是一个字段长度偏移 列表(每个字段占用的字节长度及其相应的位移)。  在 Antelope 中对于变长字段，低于 768 字节的，不 会进行 overflow page 存储，某些情况下会减少结果 集 IO. |
 | Barracuda (innodb-plugin) | ROW_FORMAT=DYNAMIC ROW_FORMAT=COMPRESSED | 这两者主要是功能上的区别功能上的。 另外在行 里的变长字段和 Antelope 的区别是只存 20 个字节， 其它的 overflow page 存储。  另外这两都需要开启 innodb_file_per_table=1 |
@@ -227,17 +228,20 @@ DYNAMIC Row Format(5.7 默认) COMPRESSED Row Format
 innodb_file_format 在配置文件中指定;row_format 则在创建数据表时指定。 
 
 在创建表的时候可以指定行格式。 
-
+```sql
 show variables like "%innodb_file_format%"; SET GLOBAL innodb_file_format=Barracuda; 
+```
 
 ![page14image51547392.jpg](./typora-user-images/page14image51547392.jpg)
 
-CREATE TABLE tf1
- (c1 INT PRIMARY KEY) ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8; 
+```sql
+CREATE TABLE tf1 (c1 INT PRIMARY KEY) ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8; 
+```
 
 查看行格式: 
-
+```sql
 SHOW TABLE STATUS LIKE 'student' \G; 
+```
 
  
 
@@ -249,8 +253,7 @@ SHOW TABLE STATUS LIKE 'student' \G;
 
 首先，索引的数据，是放在硬盘上的。查看数据和索引的大小: 
 
-select
- CONCAT(ROUND(SUM(DATA_LENGTH/1024/1024),2),'MB') AS data_len, 
+`select CONCAT(ROUND(SUM(DATA_LENGTH/1024/1024),2),'MB') AS data_len,` 
 
 
 
@@ -266,10 +269,10 @@ select
 
 比如上面这张图，我们一张表里面有 6 条数据，当我们查询 id=37 的时候，要查询 
 
- 
-
+```sql
 CONCAT(ROUND(SUM(INDEX_LENGTH/1024/1024),2),'MB') as index_len from information_schema.TABLES
  where table_schema='gupao' and table_name='user_innodb'; 
+```
 
 ![page16image51636800.jpg](./typora-user-images/page16image51636800.jpg)
 
@@ -308,8 +311,7 @@ https://www.cs.usfca.edu/~galles/visualization/Algorithms.html
 
  
 
-![page18image51628896.jpg](./typora-user-images/page18image51628896.jpg) ![page5image66118848.png](./typora-user-images/page5image66118848.png)
-
+![page18image51628896.jpg](./typora-user-images/page18image51628896.jpg)
 
 
 如果删除节点，会有相反的合并的操作。 注意这里是分裂和合并，跟 AVL 树的左旋和右旋是不一样的。 我们继续插入 4 和 5，B Tree 又会出现分裂和合并的操作。 
@@ -346,7 +348,7 @@ MySQL 中的 B+Tree 有几个特点:
 
  
 
-![page21image51619168](/Users/ryan/Desktop/page21image51619168.jpg)
+![page21image51619168](./typora-user-images/page21image51619168.jpg)
 
 在查找数据时一次页的查找代表一次 IO，也就是说，一张 2000 万左右的表，查询 数据最多需要访问 3 次磁盘。 
 
@@ -400,7 +402,9 @@ HASH:以 KV 的形式检索数据，也就是说，它会根据索引字段生�
 
  
 
-![page23image51611056.jpg](./typora-user-images/page23image51611056.jpg) ![page23image51615840.jpg](./typora-user-images/page23image51615840.jpg)
+![page23image51611056.jpg](./typora-user-images/page23image51611056.jpg) 
+
+![page23image51615840.jpg](./typora-user-images/page23image51615840.jpg)
 
 哈希索引有什么特点呢? 
 
@@ -425,19 +429,15 @@ InnoDB utilizes hash indexes internally for its Adaptive Hash Index feature
 上次课我们说到 buffer pool 里面有一块区域是 Adaptive Hash Index 自适应哈希 索引，就是这个。 
 
 这个开关默认是 ON: 
-
+```sql
 show variables like 'innodb_adaptive_hash_index'; 从存储引擎的运行信息中可以看到: 
 
-show engine innodb status\G 
+show engine innodb status;
+```
 
- 
 
-![page24image66316608.png](./typora-user-images/page24image66316608.png)
-
-\---------------------- 
-
-BUFFER POOL AND MEMORY ---------------------- -------------------------------------
- INSERT BUFFER AND ADAPTIVE HASH INDEX ------------------------------------- 
+---------------------- BUFFER POOL AND MEMORY ----------------------   
+------------INSERT BUFFER AND ADAPTIVE HASH INDEX ----------------
 
 因为 B Tree 和 B+Tree 的特性，它们广泛地用在文件系统和数据库中，例如 Windows 的 HPFS 文件系统，Oracel、MySQL、SQLServer 数据库。 
 
@@ -452,8 +452,9 @@ MySQL 是一个支持插件式存储引擎的数据库。在 MySQL 里 面，每
 ### 3.2. MySQL 数据存储文件 
 
 首先，MySQL 的数据都是文件的形式存放在磁盘中的，我们可以找到这个数据目录 的地址。在 MySQL 中有这么一个参数，我们来看一下: 
-
+```sql
 show VARIABLES LIKE 'datadir'; 
+```
 
  
 
@@ -489,11 +490,13 @@ show VARIABLES LIKE 'datadir';
 
  
 
-![page27image51616880.jpg](./typora-user-images/page27image51616880.jpg) ![page27image51617296.jpg](./typora-user-images/page27image51617296.jpg)
+![page27image51616880.jpg](./typora-user-images/page27image51616880.jpg) 
+
+![page27image51617296.jpg](./typora-user-images/page27image51617296.jpg)
 
  
 
-#### 3.2.2.InnoDB 
+## 3.2.2.InnoDB 
 
 InnoDB 只有一个文件(.ibd 文件)，那索引放在哪里呢? 
 
@@ -505,7 +508,7 @@ InnoDB 只有一个文件(.ibd 文件)，那索引放在哪里呢?
 
 ![page28image51618336.jpg](./typora-user-images/page28image51618336.jpg)
 
-  什么叫做聚集索引(聚簇索引)?
+####  什么叫做聚集索引(聚簇索引)?
 
 就是索引键值的逻辑顺序跟表数据行的物理存储顺序是一致的。(比如字典的目录 是按拼音排序的，内容也是按拼音排序的，按拼音排序的这种目录就叫聚集索引)。 
 
@@ -536,8 +539,9 @@ InnoDB 中，主键索引和辅助索引是有一个主次之分的。
  3、如果也没有这样的唯一索引，则 InnoDB 会选择内置 6 字节长的 ROWID 作为隐 
 
 藏的聚集索引，它会随着行记录的写入而主键递增。 
-
+```sql
 select _rowid name from t2;
+```
 
 ##  **4.** 索引使用原则 
 
@@ -562,24 +566,34 @@ count(distinct(column_name)) : count(*)，列的全部不同值和所有数据�
  
 
 ![page31image51619584.jpg](./typora-user-images/page31image51619584.jpg)
-
+```sql
 ALTER TABLE user_innodb DROP INDEX idx_user_gender;
- ALTER TABLE user_innodb ADD INDEX idx_user_gender (gender); -- 耗时比较久 EXPLAIN SELECT * FROM `user_innodb` WHERE gender = 0; 
+ALTER TABLE user_innodb ADD INDEX idx_user_gender (gender); -- 耗时比较久 EXPLAIN SELECT * FROM `user_innodb` WHERE gender = 0; 
+
+```
 
 ![page31image51611888.jpg](./typora-user-images/page31image51611888.jpg)
 
+```sql
 show indexes from user_innodb;
- 而 name 的离散度更高，比如“青山”的这名字，只需要扫描一行。 
+
+```
+而 name 的离散度更高，比如“青山”的这名字，只需要扫描一行。 
 
 查看表上的索引，Cardinality [kɑ:dɪ'nælɪtɪ] 代表基数，代表预估的不重复的值 31 
 
+```sql
 ALTER TABLE user_innodb DROP INDEX idx_user_name; ALTER TABLE user_innodb ADD INDEX idx_user_name (name); EXPLAIN SELECT * FROM `user_innodb` WHERE name = '青山'; 
+
+```
 
 ![page31image51619792.jpg](./typora-user-images/page31image51619792.jpg) 
 
 的数量。索引的基数与表总行数越接近，列的离散度就越高。 
 
+```sql
 show indexes from user_innodb;
+```
  如果在 B+Tree 里面的重复值太多，MySQL 的优化器发现走索引跟使用全表扫描差 
 
 不了多少的时候，就算建了索引，也不一定会走索引。 
@@ -594,11 +608,12 @@ https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html
 
 比如我们在 user 表上面，给 name 和 phone 建立了一个联合索引。 
 
-![page32image66394304.png](./typora-user-images/page32image66394304.png) ![page32image51617712.jpg](./typora-user-images/page32image51617712.jpg)
+![page32image51617712.jpg](./typora-user-images/page32image51617712.jpg)
 
+```sql
 ALTER TABLE user_innodb DROP INDEX comidx_name_phone;
- ALTER TABLE user_innodb add INDEX comidx_name_phone (name,phone); 
-
+ALTER TABLE user_innodb add INDEX comidx_name_phone (name,phone); 
+```
 
 
 ![page33image51620208.jpg](./typora-user-images/page33image51620208.jpg)
@@ -619,8 +634,9 @@ ALTER TABLE user_innodb DROP INDEX comidx_name_phone;
 ![page33image51620000.jpg](./typora-user-images/page33image51620000.jpg) 
 
 
-
+```sql
 EXPLAIN SELECT * FROM user_innodb WHERE name= '权亮' 
+```
 
 3)使用右边的 phone 字段，无法使用索引，全表扫描: EXPLAIN SELECT * FROM user_innodb WHERE phone = '15204661800' 
 
@@ -634,12 +650,16 @@ EXPLAIN SELECT * FROM user_innodb WHERE name= '权亮'
 
 相当于建立了两个联合索引(name),(name,phone)。 如果我们创建三个字段的索引 index(a,b,c)，相当于创建三个索引: index(a) 
 
-![page34image51621040.jpg](./typora-user-images/page34image51621040.jpg) ![page34image51620832.jpg](./typora-user-images/page34image51620832.jpg)
+![page34image51621040.jpg](./typora-user-images/page34image51621040.jpg)
+ 
+![page34image51620832.jpg](./typora-user-images/page34image51620832.jpg)
 
+```sql
 SELECT * FROM user_innodb WHERE name= ? AND phone = ?; SELECT * FROM user_innodb WHERE name= ?; 
 
 CREATE INDEX idx_name on user_innodb(name);
- CREATE INDEX idx_name_phone on user_innodb(name,phone);  
+CREATE INDEX idx_name_phone on user_innodb(name,phone);  
+```
 
 index(a,b)
  index(a,b,c)
@@ -655,7 +675,7 @@ index(a,b)
 
 非主键索引，我们先通过索引找到主键索引的键值，再通过主键值查出索引里面没 有的数据，它比基于主键索引的查询多扫描了一棵索引树，这个过程就叫回表。 
 
-例如:select * from user_innodb where name = 'Tom'; 
+例如: ```sql  select * from user_innodb where name = 'Tom';  ```
 
 ![page29image51618752.jpg](./typora-user-images/page29image51618752.jpg)
 
@@ -680,55 +700,57 @@ https://dev.mysql.com/doc/refman/5.7/en/index-condition-pushdown-optimization.ht
 再来看这么一张表，在 last_name 和 first_name 上面创建联合索引。 
 
 
-
--- 创建联合索引ALTER TABLE user_innodb DROP INDEX comixd_name_phone;
- ALTER TABLE user_innodb add INDEX `comixd_name_phone` (`name`,`phone`); 
+```sql
+# 创建联合索引 ALTER TABLE user_innodb DROP INDEX comixd_name_phone;
+ALTER TABLE user_innodb add INDEX `comixd_name_phone` (`name`,`phone`); 
 
 EXPLAIN SELECT name,phone FROM user_innodb WHERE name= '青山' AND phone = ' 13666666666'; EXPLAIN SELECT name FROM user_innodb WHERE name= '青山' AND phone = ' 13666666666'; EXPLAIN SELECT phone FROM user_innodb WHERE name= '青山' AND phone = ' 13666666666'; 
 
-![page36image51621664.jpg](./typora-user-images/page36image51621664.jpg) ![page36image66402368.png](./typora-user-images/page36image66402368.png)
+```
 
+![page36image51621664.jpg](./typora-user-images/page36image51621664.jpg)
+ 
+```sql
 drop table employees;
- CREATE TABLE `employees` ( 
-
-`emp_no` int(11) NOT NULL, `birth_date` date NULL,
+CREATE TABLE `employees` ( 
+ `emp_no` int(11) NOT NULL,
+ `birth_date` date NULL,
  `first_name` varchar(14) NOT NULL, 
-
-
-
-`last_name` varchar(16) NOT NULL, `gender` enum('M','F') NOT NULL, `hire_date` date NULL,
+ `last_name` varchar(16) NOT NULL,
+ `gender` enum('M','F') NOT NULL,
+ `hire_date` date NULL,
  PRIMARY KEY (`emp_no`) 
-
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1; 
+
+
 
 alter table employees add index idx_lastname_firstname(last_name,first_name); 
 
 INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, '698', 'liu', 'F', NULL);
- INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, 'd99', 'zheng', 'F', NULL); 
+INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, 'd99', 'zheng', 'F', NULL); 
 
 INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, 'e08', 'huang', 'F', NULL);
- INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, '59d', 'lu', 'F', NULL); 
+INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, '59d', 'lu', 'F', NULL); 
 
 INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, '0dc', 'yu', 'F', NULL);
- INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, '989', 'wang', 'F', NULL); 
+INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, '989', 'wang', 'F', NULL); 
 
 INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, 'e38', 'wang', 'F', NULL);
- INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, '0zi', 'wang', 'F', NULL); 
+INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, '0zi', 'wang', 'F', NULL); 
 
 INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, 'dc9', 'xie', 'F', NULL);
- INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, '5ba', 'zhou', 'F', NULL); 
-
-`gender`, `hire_date`) VALUES (1, `gender`, `hire_date`) VALUES (2, `gender`, `hire_date`) VALUES (3, `gender`, `hire_date`) VALUES (4, `gender`, `hire_date`) VALUES (5, `gender`, `hire_date`) VALUES (6, `gender`, `hire_date`) VALUES (7, `gender`, `hire_date`) VALUES (8, `gender`, `hire_date`) VALUES (9, `gender`, `hire_date`) VALUES (10, 
+INSERT INTO `employees` (`emp_no`, `birth_date`, `first_name`, `last_name`, NULL, '5ba', 'zhou', 'F', NULL); 
+```
 
 关闭 ICP:set optimizer_switch='index_condition_pushdown=off'; 
 
 查看参数: 
 
-show variables like 'optimizer_switch'; 
+```sql show variables like 'optimizer_switch'; ```
 
 现在我们要查询所有姓 wang，并且名字最后一个字是 zi 的员工，比如王胖子，王 瘦子。查询的 SQL: 
 
-select * from employees where last_name='wang' and first_name LIKE '%zi' ; 
+```sql select * from employees where last_name='wang' and first_name LIKE '%zi' ;  ```
 
 这条 SQL 有两种执行方式: 
 
@@ -749,16 +771,18 @@ select * from employees where last_name='wang' and first_name LIKE '%zi' ;
 ![page38image51621248.jpg](./typora-user-images/page38image51621248.jpg)
 
 
-
+```sql
 explain select * from employees where last_name='wang' and first_name LIKE '%zi' ; 
+```
 
 Using Where 代表从存储引擎取回的数据不全部满足条件，需要在 Server 层过滤。 
 
 先用 last_name 条件进行索引范围扫描，读取数据表记录，然后进行比较，检查是 否符合 first_name LIKE '%zi' 的条件。此时 3 条中只有 1 条符合条件。 
 
 开启 ICP: 
-
+```sql
 set optimizer_switch='index_condition_pushdown=on'; 此时的执行计划，Using index condition: 
+```
 
 把 first_name LIKE '%zi'下推给存储引擎后，只会从数据表读取所需的 1 条记录。 索引条件下推(Index Condition Pushdown)，5.6 以后完善的功能。只适用于二 
 
@@ -790,7 +814,7 @@ set optimizer_switch='index_condition_pushdown=on'; 此时的执行计划，Usin
 ### 4.6 什么时候用不到索引? 
 
 1、索引列上使用函数(replace\SUBSTR\CONCAT\sum count avg)、表达式、 计算(+ - * /): 
-
+```sql
 explain SELECT * FROM `t2` where id+1 = 4; 2、字符串不加引号，出现隐式转换 
 
  ALTER TABLE user_innodb DROP INDEX comidx_name_phone;
@@ -798,14 +822,17 @@ explain SELECT * FROM `t2` where id+1 = 4; 2、字符串不加引号，出现隐
 
 explain SELECT * FROM `user_innodb` where name = 136; explain SELECT * FROM `user_innodb` where name = '136'; 
 
+```
+
 3、like 条件中前面带% 
 
 where 条件中 like abc%，like %2673%，like %888 都用不到索引吗?为什么? 
 
 过滤的开销太大，所以无法使用索引。这个时候可以用全文索引。 4、负向查询
  NOT LIKE 不能: 
-
+```sql
 explain select *from employees where last_name not like 'wang' != (<>)和 NOT IN 在某些情况下可以: 
+```
 
 注意一个 SQL 语句是否使用索引，跟数据库版本、数据量、数据选择度都有关系。 
 
@@ -816,10 +843,10 @@ explain select *from employees where last_name not like 'wang' != (<>)和 NOT IN
 也不是基于语义。怎么样开销小就怎么来。 
 
 https://docs.oracle.com/cd/B10501_01/server.920/a96533/rbo.htm#38960 https://dev.mysql.com/doc/refman/5.7/en/cost-model.html 
-
+```sql
 explain select *from user_innodb where name like 'wang%'; explain select *from user_innodb where name like '%wang'; 
 
 explain select *from employees where emp_no not in (1) explain select *from employees where emp_no <> 1 
 
-![page41image66447488.png](./typora-user-images/page41image66447488.png) ![page41image66447680.png](./typora-user-images/page41image66447680.png) ![page41image66447872.png](./typora-user-images/page41image66447872.png)
-
+```
+`
