@@ -117,10 +117,26 @@ Maven拥有三套相互独立的生命周期分别为 :
    * reporting ： 包括想的报告输出目录配置、报告插件配置等。  
  
 #### 依赖管理
- `distributionManagement` 该元素既能让子模块集成到父模块的依赖配置，又能保证子模块依赖的灵活使用，在`distributionManagement`元素  
- 下的依赖声明不会引入实际的依赖，不过它能约束 `dependency`下的依赖使用。  
- 插件同理 --> `pluginManagement`   
- 
+> `distributionManagement` 指定Maven分发构件的位置  `maven deploy -P release` 发布release 版本， 
+ ```xml
+     <!--  使用分发管理将本项目打成jar包，直接上传到指定服务器 -->
+    <distributionManagement>
+        <snapshotRepository>
+            <!-- nexus服务器中用户名：在settings.xml中<server>的id-->
+            <id>snapshots</id>
+            <url>https://maven.rjft.net/nexus/content/repositories/snapshots/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
+        <repository>
+            <id>releases</id>
+            <url>https://maven.rjft.net/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
+```
+---
+
+>`dependencyManagement` 该元素既能让子模块继承到父模块的依赖配置，又能保证子模块依赖的灵活使用，在`dependencyManagement` 元素下声明
+>的依赖不会引入实际的依赖，不过他会约束   `dependencies`下依赖的使用
 
 ----
 
