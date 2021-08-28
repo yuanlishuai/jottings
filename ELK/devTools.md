@@ -1,6 +1,7 @@
 
 #elasticsearch dev tools  
 初识 elasticsearch
+elasticseatch
 
 ```GET _search
    {
